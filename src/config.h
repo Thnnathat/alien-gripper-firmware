@@ -11,7 +11,7 @@
     #define HSPI_CS   15  // CS (Chip Select) บน HSPI
     #define W5500_RST 4   // ขา RST สำหรับ W5500
     
-    const int sensor = 35;
+    const int switchSensor = 34;
     const int relay_A = 22;
     const int relay_B = 23;
     const int relay_P = 21;
@@ -20,7 +20,5 @@
     const int dataPin = 19;   // DOUT เชื่อมต่อกับขา GPIO 19 บน ESP32
 
     const int serial_baudrate = 115200;
-    const int serial1_baudrate = 115200;
-
 
 #endif

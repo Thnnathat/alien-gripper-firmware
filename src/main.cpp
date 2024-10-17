@@ -41,7 +41,7 @@ void loop() {
 void init() {
   Serial.begin(serial_baudrate);
 
-  pinMode(sensor, INPUT);
+  pinMode(switchSensor, INPUT);
   pinMode(relay_A, OUTPUT);
   pinMode(relay_B, OUTPUT);
   pinMode(relay_P, OUTPUT);
@@ -80,7 +80,8 @@ void task() {
 
     // อ่านค่าจากเซ็นเซอร์ (เช่น HX710B)
     float pressureValue = hx710b.readHX710B();  // สมมติว่าเป็นการอ่านค่าแรงดัน
+    int switchValue = digitalRead(switchSensor);
 
-    com.send(pressureValue);
+    com.send(pressureValue, switchValue);
   }
 }

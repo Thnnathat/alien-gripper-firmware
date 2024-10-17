@@ -19,6 +19,6 @@
             JsonDocument messageJson;
             void webSocketEvent(uint8_t client_num, WStype_t type, uint8_t * payload, size_t length);
             JsonDocument parseJson(String string);
-            void send(int presureValue);
+            void send(int presureValue, int switchValue);
     };
 #endif

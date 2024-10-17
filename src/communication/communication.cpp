@@ -21,11 +21,12 @@ void Communication::webSocketEvent(uint8_t client_num, WStype_t type, uint8_t * 
   }
 }
 
-void Communication::send(int pressureValue) {
+void Communication::send(int pressureValue, int switchValue) {
     // สร้าง JSON object สำหรับส่งข้อมูล
     StaticJsonDocument<200> jsonDoc;
     jsonDoc["id"] = "gripper";
     jsonDoc["sensors"]["pressure"] = pressureValue;
+    jsonDoc["sensors"]["switch"] = switchValue;
 
     // แปลง JSON object เป็น string
     String jsonString;
