@@ -13,17 +13,15 @@
 
 void init();
 void task();
+void wifiDHCP();
+void wifiStatic();
 
 HX710B hx710b;
 Communication com = Communication(81);
 RelayControl relay;
 GripperControl alien = GripperControl(relay);
 
-IPAddress local_IP(192, 168, 83, 184);    // IP Address ของ ESP32
-IPAddress gateway(192, 168, 83, 36);       // Gateway ของเครือข่าย
-IPAddress subnet(255, 255, 255, 0);      // Subnet Mask
-IPAddress primaryDNS(8, 8, 8, 8);        // Primary DNS (Google Public DNS)
-IPAddress secondaryDNS(8, 8, 4, 4);      // Secondary DNS (Google Public DNS)
+
 
 const char* ssid = "mi10tpro";  // เปลี่ยนเป็น SSID ของคุณ
 const char* password = "33333333"; // เปลี่ยนเป็น Password ของคุณ
@@ -56,17 +54,41 @@ void init() {
   // กำหนด Data pin เป็น INPUT
   pinMode(dataPin, INPUT);
 
+  // Wifi connection
+  wifiDHCP();
+
+  Serial.println("Connected to WiFi");
+  Serial.print("Ip: ");
+  Serial.println(WiFi.localIP()); // แสดง IP Address
+  com.begin();
+}
+
+void wifiDHCP(){
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  Serial.println("");
+
+  // Wait for connection
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+}
+
+void wifiStatic() {
+  IPAddress local_IP(192, 168, 8, 166);    // IP Address ของ ESP32
+  IPAddress gateway(192, 168, 8, 142);       // Gateway ของเครือข่าย
+  IPAddress subnet(255, 255, 255, 0);      // Subnet Mask
+  IPAddress primaryDNS(8, 8, 8, 8);        // Primary DNS (Google Public DNS)
+  IPAddress secondaryDNS(8, 8, 4, 4);      // Secondary DNS (Google Public DNS)
+
+  WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
 
   while (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
     delay(1000);
     Serial.println("Connecting to WiFi...");
   }
-
-  Serial.println("Connected to WiFi");
-  Serial.print("Ip: ");
-  Serial.println(WiFi.localIP()); // แสดง IP Address
-  com.begin();
 }
 
 void task() {
